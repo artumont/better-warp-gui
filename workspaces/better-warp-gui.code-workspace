@@ -1,0 +1,17 @@
+{
+    "folders": [
+        {
+            "path": "../packages/warp-gui"
+        },
+        {
+            "path": "../packages/warp-ipc"
+        },
+        {
+            "path": "../tools"
+        },
+        {
+            "name": "root",
+            "path": ".."
+        }
+    ]
+}
