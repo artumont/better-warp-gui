@@ -1,23 +1,6 @@
-use std::collections::BTreeSet;
-
 use serde::{Deserialize, Serialize};
 
-// Warp modes used in `set_mode` operation, determines the type of connection used by the Warp service.
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
-#[serde(untagged, rename_all = "camelCase")]
-pub enum WarpMode {
-    Warp,
-    DnsOverTls,
-    DnsOverHttps,
-}
-
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
-#[serde(untagged, rename_all = "camelCase")]
-pub enum FamiliesMode {
-    Off,
-    Malware,
-    Full,
-}
+use crate::daemon::types::{FamiliesMode, OperationMode};
 
 /// Operation variants for IPC communication with the Cloudflare Warp service.
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq)]
@@ -55,7 +38,7 @@ pub enum Operation {
         set_suppress_broadcast: SuppressBroadcast,
     },
     SetMode {
-        set_mode: WarpMode,
+        set_mode: OperationMode,
     },
     SetDisableWiFi {
         set_disable_wi_fi: bool,
@@ -67,7 +50,7 @@ pub enum Operation {
         set_families_mode: FamiliesMode,
     },
     SetLicense {
-        license: BTreeSet<u8>, // The license string converted to an array of ascii codes
+        license: Vec<u8>, // The license string converted to an array of ascii codes
     },
 
     // Delete Operations
