@@ -3,7 +3,8 @@ use futures_util::stream::StreamExt;
 use tokio::net::UnixStream;
 use tokio_util::codec::{Framed, LengthDelimitedCodec};
 
-pub mod protocol;
+pub mod daemon;
+pub mod responses;
 
 static SOCKET_PATH: &str = "/run/cloudflare-warp/warp_service";
 
@@ -23,14 +24,14 @@ impl WarpIpcClient {
     /// Sends a request to the Warp service and waits for the response.
     pub async fn send_request(
         &mut self,
-        request: protocol::Request,
-    ) -> std::io::Result<protocol::Response> {
+        request: daemon::protocol::Request,
+    ) -> std::io::Result<daemon::protocol::Response> {
         let request_bytes = serde_json::to_vec(&request)?;
         self.framed_stream.send(request_bytes.into()).await?;
 
         if let Some(response_bytes) = self.framed_stream.next().await {
             let response_bytes = response_bytes?;
-            let response: protocol::Response = serde_json::from_slice(&response_bytes)?;
+            let response: daemon::protocol::Response = serde_json::from_slice(&response_bytes)?;
             Ok(response)
         } else {
             Err(std::io::Error::new(
