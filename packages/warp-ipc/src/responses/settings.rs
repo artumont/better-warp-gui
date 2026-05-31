@@ -81,8 +81,7 @@ pub struct NetworkHealthThresholds {
     pub latency_ms: u16,
 }
 
-/// Response structure for `get_app_settings` operation, contains all the application settings of the Cloudflare Warp service. This is the most complex response structure, as it contains a lot of fields with different types and some nested structures.
-#[derive(Deserialize)]
+/// Response structure for `get_app_settings` operation, contains all the application settings of the Cloudflare Warp service.
 pub struct GetAppSettings {
     pub always_on: bool,
     pub switch_locked: bool,
